@@ -322,22 +322,22 @@ export class App extends React.Component {
 
         let keyDate = item.endDate.split("T")[0];
         if ( !DateSum[keyDate]){
-          DateSum[keyDate] = item.value;
+          DateSum[keyDate] = parseInt(item.value);
         }else{
-          DateSum[keyDate] = DateSum[keyDate] + item.value;
+          DateSum[keyDate] = DateSum[keyDate] + parseInt(item.value);
         }
       })
 
 
 
-      // this will assume the threshold step count per hour in a day.. threshold_count  =  1 hour
-      const threshold_count = 100;
+      // this will assume the threshold step count per hour in a day.. 
+      const steps_per_hour = 1000;
 
 
       let TotalValidCount = 0;
 
       Object.entries(DateSum).forEach(([key, value]) => {
-        if (value >= threshold_count ){
+        if (value >= steps_per_hour ){
           TotalValidCount = TotalValidCount + value;
         }
       });
@@ -345,10 +345,12 @@ export class App extends React.Component {
       const processEnd  = new Date();
       const processTime = processEnd.getTime() - processStart.getTime();
 
-
+      const total_time_spent = (TotalValidCount / steps_per_hour);
       console.log("Total Valid Steps", TotalValidCount);
+      console.log("Time spent walking :  " + total_time_spent + " hours");
       console.log("Total Number of record processed : " + oResult.length);
-      console.log("Process Time " + processTime + "ms");
+      console.log("Total Time  to  process : " + processTime);
+     
   });
  
 
@@ -373,31 +375,10 @@ export class App extends React.Component {
             style={styles.scrollView}>
             <View style={styles.body}>
               <View style={styles.sectionContainer}>
-                <Text style={styles.sectionTitle}>Weight</Text>
-                {(Weight) &&
-                  <Text style={styles.sectionDescription}>
-                  {Weight.value}
-                  </Text>
-                }
-                {(!Weight) &&
-                  <Text style={styles.sectionDescriptionError}>
-                  Add your Weight to Health App!
-                  </Text>
-                }
+                <Text style={styles.sectionTitle}>APPLE HEALTH KIT INTEGRATION</Text>
+   
               </View>
-              <View style={styles.sectionContainer}>
-                <Text style={styles.sectionTitle}>Age</Text>
-                {(DateOfBirth) &&
-                  <Text style={styles.sectionDescription}>
-                  {DateOfBirth.age}
-                  </Text>
-                }
-                {(!DateOfBirth) &&
-                  <Text style={styles.sectionDescriptionError}>
-                  Add your Birthday to Health App!
-                  </Text>
-                }
-              </View>
+     
             </View>
           </ScrollView>
         </SafeAreaView>
